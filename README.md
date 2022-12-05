@@ -14,3 +14,6 @@ Time - No fle
 Quality - Some flexibility
 
 ### Scope
+
+### File Structure
+![image](https://user-images.githubusercontent.com/115237595/205681374-ce3aaef2-6f52-4196-ad1f-717cd47558ad.png)
