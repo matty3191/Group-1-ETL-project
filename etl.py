@@ -9,3 +9,36 @@ else:
     print("Invalid file format")
 
 #Transformation
+column_names = [
+    'DateTime',
+    'Cafe Branch',
+    'Name',
+    'Product',
+    'Price',
+    'Payment Method',
+    'Card Number'
+]
+
+df.columns = column_names
+
+#Dropping Card Number
+to_drop = [
+    'Card Number',
+    'Name'
+]
+
+df.drop (columns = to_drop, inplace=True)
+df.head()
+
+#Creating new Date and Time columns 
+df[['Date','Time']] = df.DateTime.str.split(" ",expand=True,)
+df.head()
+
+to_drop = [
+    'DateTime',
+]
+
+df.drop (columns = to_drop, inplace=True)
+df.head()
+
+
