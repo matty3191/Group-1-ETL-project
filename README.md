@@ -17,3 +17,6 @@ Quality - Some flexibility
 
 ### File Structure
 ![image](https://user-images.githubusercontent.com/115237595/205681374-ce3aaef2-6f52-4196-ad1f-717cd47558ad.png)
+
+### Normalisation + schema
+![image](https://user-images.githubusercontent.com/115237595/206240414-e17e35e8-8031-40be-b601-7d7968039bec.png)
