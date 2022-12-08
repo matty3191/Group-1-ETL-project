@@ -8,7 +8,7 @@ conn = psycopg2.connect(
     host="0.0.0.0"
 )
 
-#Open cursor t perform database operations
+#Open cursor to perform database operations
 cur = conn.cursor()
 
 #query the database
