@@ -19,4 +19,4 @@ Quality - Some flexibility
 ![image](https://user-images.githubusercontent.com/115237595/205681374-ce3aaef2-6f52-4196-ad1f-717cd47558ad.png)
 
 ### Normalisation + schema
-![image](https://user-images.githubusercontent.com/115237595/206579332-11252cd5-36ed-443d-9bf9-a7b0e720ebc1.png)
+![image](https://user-images.githubusercontent.com/115237595/206580167-d9c98840-6106-4621-b368-28f28d4d66d0.png)
