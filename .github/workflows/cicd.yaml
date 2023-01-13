@@ -24,4 +24,4 @@ jobs:
     - name: update stack
       run: aws cloudformation update-stack
         --stack-name group1-stack
-        --template-body file://ec2-grafana.yaml --parameters ParameterKey=AvailabilityZone,ParameterValue=eu-west-1a ParameterKey=EnvironmentType,ParameterValue=test ParameterKey=KeyPairName,ParameterValue=group1kp --region eu-west-1
+        --template-body file://CF.yaml --parameters ParameterKey=AvailabilityZone,ParameterValue=eu-west-1a ParameterKey=EnvironmentType,ParameterValue=test ParameterKey=KeyPairName,ParameterValue=group1kp --region eu-west-1
