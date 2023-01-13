@@ -20,5 +20,13 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-    - name: list bucket
-      run: aws s3 ls
+    - name: create bucket
+      run: aws s3 mb s3://delon8-test-bucket --region eu-west-1
+    - name: putting cf file into the bucket
+      run: aws s3 cp cfwithdan.yaml s3://delon8-test-bucket/cfwithdan.yaml
+    - name: create stack
+      run: aws cloudformation create-stack
+        --stack-name group1-teststack
+        --template-url https://delon8-test-bucket.s3.eu-west-1.amazonaws.com/cfwithdan.yaml
+        --region eu-west-1
+
