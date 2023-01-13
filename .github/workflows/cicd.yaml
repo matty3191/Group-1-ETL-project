@@ -21,9 +21,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
 
-    # - name: update stack
-    #   run: aws cloudformation update-stack
-    #     --stack-name group1-stack
-    #     --template-url https://delon8-test-bucket.s3.eu-west-1.amazonaws.com/cf.yaml
-    #     --region eu-west-1
-
+    - name: update stack
+      run: aws cloudformation update-stack
+        --stack-name group1-stack
+        --template-url https://delon8-test-bucket.s3.eu-west-1.amazonaws.com/CF.yaml
+        --region eu-west-1
