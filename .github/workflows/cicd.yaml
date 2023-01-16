@@ -14,34 +14,17 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-
-    - name: Install dependencies
-      run: |
-        python -m venv .venv
-        source .venv/bin/activate
-        pip install black
-
-    - name: Configure AWS credentials
+    - name: Configure AWS credentials and checkout
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
-
-    # - name: Format code
-    #   run: |
-    #     source .venv/bin/activate
-    #     black .
-
-    # - name: Lint files
-    #   run: black .
-
-    - name: Update stack
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: update stack
       run: aws cloudformation update-stack
         --stack-name group1-stack
         --template-body file://CF.yaml --parameters ParameterKey=AvailabilityZone,ParameterValue=eu-west-1a ParameterKey=EnvironmentType,ParameterValue=test ParameterKey=KeyPairName,ParameterValue=group1kp --region eu-west-1
