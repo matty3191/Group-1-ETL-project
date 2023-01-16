@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure AWS credentials <--- USE THIS STEP TO ASSUME THE NECESSARY AWS ROLE
+      - name: Configure AWS credentials #<--- USE THIS STEP TO ASSUME THE NECESSARY AWS ROLE
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-deploy-role
-          aws-region: eu-west-1 <--- Hardcode region
+          aws-region: eu-west-1 #<--- Hardcode region
           role-duration-seconds: 1200
 
       - name: List S3 buckets to test credentials
