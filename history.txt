@@ -1,4 +1,3 @@
-
 name: Upload assets to S3 bucket
 
 on:
