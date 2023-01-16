@@ -33,8 +33,7 @@ jobs:
 
       - name: Update CloudFormation stack
         run: |
-          aws cloudformation update-stack 
-          --stack-name group1-stack 
+          aws cloudformation update-stack --stack-name group1-stack 
           --template-body file://CF.yaml 
           --parameters 
             ParameterKey=AvailabilityZone,ParameterValue=eu-west-1a 
