@@ -26,7 +26,7 @@ jobs:
           role-duration-seconds: 1200
 
       - name: Install AWS CLI
-        run: sudo apt-get install awscli y
+        run: sudo apt-get install awscli -y
 
       - name: Validate Cloudformation template
         run: aws cloudformation validate-template --template-body file://CF.yaml
