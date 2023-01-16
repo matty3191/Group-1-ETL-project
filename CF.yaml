@@ -342,7 +342,4 @@ Resources:
         docker volume create grafana-storage
         sudo docker run -d -p 80:3000 --rm --volume grafana-storage:/var/lib/grafana grafana/grafana
         --//--
- 
-  
 
-#'hello'
