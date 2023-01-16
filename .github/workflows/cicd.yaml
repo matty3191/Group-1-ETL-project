@@ -33,7 +33,7 @@ jobs:
 
       - name: Update CloudFormation stack
         run: |
-          aws cloudformation update-stack --stack-name group1-stack --template-body file://CF.yaml --parameters ParameterKey=AvailabilityZone,ParameterValue=eu-west-1a ParameterKey=EnvironmentType,ParameterValue=test ParameterKey=KeyPairName,ParameterValue=group1kp --region eu-west-1
+          aws cloudformation update-stack --stack-name group1-stack --template-body file://CF.yaml --region eu-west-1
   # upload:
   #   name: List account S3 buckets
   #   runs-on: ubuntu-latest

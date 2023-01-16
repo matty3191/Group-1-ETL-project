@@ -300,15 +300,15 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: !Ref AvailabilityZone
+      AvailabilityZone: eu-west-1a
       ImageId: !Ref AmiID
       InstanceType: 
         !FindInMap [
           EnvironmentToInstanceType,
-          !Ref EnvironmentType,
+          test,
           InstanceType,
         ]
-      KeyName: !Ref KeyPairName
+      KeyName: group1kp
       SecurityGroupIds:
         - sg-06bd2953ac4510386
         - sg-09ddd305daee3cb89
