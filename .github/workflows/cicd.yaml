@@ -5,8 +5,6 @@ on:
   push:
     branches:
     - main
-      # paths:
-      # - 'group-1-data-engineering-final-project/**/*.py'
 
 permissions:
   id-token: write
@@ -35,9 +33,6 @@ jobs:
           black test.py
           flake8 --ignore=E501,F841 test.py
 
-
-
-
   Deploy:
     name: Deploy to AWS
     runs-on: Ubuntu-latest
@@ -58,20 +53,3 @@ jobs:
         run: |
           aws cloudformation update-stack --stack-name group1-stack --template-body file://CF.yaml --region eu-west-1
 
-
-  # upload:
-  #   name: List account S3 buckets
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Configure AWS credentials
-  #       uses: aws-actions/configure-aws-credentials@v1-node16
-  #       with:
-  #         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-deploy-role
-  #         aws-region: eu-west-1
-  #         role-duration-seconds: 1200
-
-  #     - name: List S3 buckets to test credentials
-  #       run: aws s3 ls delon8-group1-needed1
