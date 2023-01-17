@@ -37,7 +37,8 @@ Resources:
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
-            Function: !GetAtt LambdaFunction.Arn
+            Function: arn:aws:lambda:eu-west-1:948243690849:function:group-1-lambda
+            # !GetAtt LambdaFunction.Arn
 
   S3BucketPermission:
     Type: AWS::Lambda::Permission
@@ -45,7 +46,8 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref LambdaFunction
       Principal: s3.amazonaws.com
-      SourceArn: !GetAtt S3Bucket.Arn
+      SourceArn: arn:aws:s3:::g1-final-bucket
+      # !GetAtt S3Bucket.Arn
 
   LambdaFunction:
     Type: AWS::Lambda::Function
@@ -65,238 +67,242 @@ Resources:
         - arn:aws:lambda:eu-west-1:948243690849:layer:psycopg2_layer:3
       Code:
         ZipFile: |
-          import json
-          import pandas as pd
-          import boto3
-          from sqlalchemy import create_engine
+            import json
+            import pandas as pd
+            import boto3
+            from sqlalchemy import create_engine
 
-          s3_client = boto3.client('s3')
+            s3_client = boto3.client('s3')
 
-          def lambda_handler(event, context):
-              # TODO implement
+            def lambda_handler(event, context):
+                # TODO implement
 
-              try:
-                  bucket = event['Records'][0]['s3']['bucket']['name']
-                  key = event['Records'][0]['s3']['object']['key']
-                  
-                  resp = s3_client.get_object(Bucket= bucket, Key=key)
-                  
-                  df = pd.read_csv(resp['Body'], sep=',')
-                  
-                  ### to do - if statement for number of columns data validation
-                  column_names = [
-                      'DateTime',
-                      'Cafe Branch',
-                      'Name',
-                      'Product',
-                      'price',
-                      'Payment Method',
-                      'Card Number'
-                  ]
-                  
-                  df.columns = column_names
-                  
-                  #Dropping Sensitive data
-                  to_drop = [
-                      'Card Number',
-                      'Name'
-                  ]
-                  
-                  df.drop (columns = to_drop, inplace=True)
-                  
-                  #Creating new Date and Time columns 
-                  df[['Date','Time']] = df.DateTime.str.split(" ",expand=True,)
-                  
-                  to_drop = [
-                      'DateTime',
-                  ]
-                  
-                  df.drop (columns = to_drop, inplace=True)
-                  
-                  def reverse_date(date):
-                      day, month, year = date.split("/")
-                      return year + "-" + month + "-" + day
-                      
-                  # Reverse the strings in the 'Column' column
-                  df['Date'] = df['Date'].apply(reverse_date)
-                  
-                  # Creating Products Pandas Dataframe
-                  
-                  Drinks = {
-                      "Latte": [2.15, 2.45],
-                      "Flavoured latte - Vanilla": [2.55, 2.85],
-                      "Flavoured latte - Caramel": [2.55, 2.85],
-                      "Flavoured latte - Hazelnut": [2.55, 2.85],
-                      "Flavoured latte - Gingerbread": [2.55, 2.85],
-                      "Cappuccino": [2.15, 2.45],
-                      "Americano": [1.95, 2.25],
-                      "Flat white": [2.15, 2.45],
-                      "Cortado": [2.05, 2.35],
-                      "Mocha": [2.30, 2.70],
-                      "Espresso": [1.50, 1.80],
-                      "Filter coffee": [1.50, 1.80],
-                      "Chai latte": [2.30, 2.60],
-                      "Hot chocolate": [2.20, 2.90],
-                      "Flavoured hot chocolate - Caramel": [2.60, 2.90],
-                      "Flavoured hot chocolate - Hazelnut": [2.60, 2.90],
-                      "Flavoured hot chocolate - Vanilla": [2.60, 2.90],
-                      "Luxury hot chocolate": [2.40, 2.70],
-                      "Red Label tea": [1.20, 1.80],
-                      "Speciality Tea - Earl Grey": [1.30, 1.60],
-                      "Speciality Tea - Green": [1.30, 1.60],
-                      "Speciality Tea - Camomile": [1.30, 1.60],
-                      "Speciality Tea - Peppermint": [1.30, 1.60],
-                      "Speciality Tea - Fruit": [1.30, 1.60],
-                      "Speciality Tea - Darjeeling": [1.30, 1.60],
-                      "Speciality Tea - English breakfast": [1.30, 1.60],
-                      "Iced latte": [2.35, 2.85],
-                      "Flavoured iced latte - Vanilla": [2.75, 3.25],
-                      "Flavoured iced latte - Caramel": [2.75, 3.25],
-                      "Flavoured iced latte - Hazelnut": [2.75, 3.25],
-                      "Iced americano": [2.15, 2.50],
-                      "Frappes - Chocolate Cookie": [2.75, 3.25],
-                      "Frappes - Strawberries & Cream": [2.75, 3.25],
-                      "Frappes - Coffee": [2.75, 3.25],
-                      "Smoothies - Carrot Kick": [2.00, 2.50],
-                      "Smoothies - Berry Beautiful": [2.00, 2.50],
-                      "Smoothies - Glowing Greens": [2.00, 2.50],
-                      "Hot Chocolate": [1.40, 1.70],
-                      "Glass of milk": [0.70, 1.10]
-                  }
-                  
-                  drinks_transformed = {
-                      "product_id" : [],
-                      "product_name_and_size" : [],
-                      "price" : []
-                  }
-                  id = 0
-                  for i,v in Drinks.items():
-                      id += 1
-                      drinks_transformed["product_id"].append("PID" + str(id))
-                      drinks_transformed["product_name_and_size"].append("Regular " + i)
-                      drinks_transformed["price"].append(v[0])
-                      
-                      id += 1
-                      drinks_transformed["product_id"].append("PID" + str(id))
-                      drinks_transformed["product_name_and_size"].append("Large " + i)
-                      drinks_transformed["price"].append(v[1])
-                      
-                  products_table_data = pd.DataFrame(drinks_transformed)
-                  products_table_data.head()
-                  
-                  #Creating branch_id and Branch Pandas dataframe
-                  branch_id_dic = {
-                      "Longbridge" : "101",
-                      "Uppingham" : "102",
-                      "Chesterfield" : "103"
-                  }
-                  branch_ids_index = ["101", "102", "103"]
-                  branch_names = ["Longbridge", "Uppingham", "Chesterfield"]
-                  branch_ids = []
-                  
-                  branch_df = pd.DataFrame({
-                      "branch_id" : branch_ids_index,
-                      "branch_name" : branch_names
-                  })
-                  
-                  for i in df["Cafe Branch"]:
-                      branch_ids.append(branch_id_dic[i])
-                      
-                  print(branch_df)
-                  
-                  #Creating Payments ID and Payments Pandas dataframe
-                  payment_method_dic = {
-                      "Cash" : "PM01",
-                      "Card" : "PM02",
-                      "Mixed" : "PM03"
-                  }
-                  
-                  payment_method_id_index = ["PM01", "PM02", "PM03"]
-                  payment_method = ["Cash", "Card", "Mixed"]
-                  
-                  payment_method_ids = []
-                  
-                  payment_method_df = pd.DataFrame({
-                      "payment_id" : payment_method_id_index,
-                      "payment_method" : payment_method
-                  })
+                try:
+                
+                    bucket = event['Records'][0]['s3']['bucket']['name']
+                    key = event['Records'][0]['s3']['object']['key']
+                    
+                    resp = s3_client.get_object(Bucket= bucket, Key=key)
+                    
+                    df = pd.read_csv(resp['Body'], sep=',')
+                    
+                    ### to do - if statement for number of columns data validation
+                    column_names = [
+                        'DateTime',
+                        'Cafe Branch',
+                        'Name',
+                        'Product',
+                        'price',
+                        'Payment Method',
+                        'Card Number'
+                    ]
+                    
+                    df.columns = column_names
+                    
+                    #Dropping Sensitive data
+                    to_drop = [
+                        'Card Number',
+                        'Name'
+                    ]
+                    
+                    df.drop (columns = to_drop, inplace=True)
+                    
+                    #Creating new Date and Time columns 
+                    df[['Date','Time']] = df.DateTime.str.split(" ",expand=True,)
+                    
+                    to_drop = [
+                        'DateTime',
+                    ]
+                    
+                    df.drop (columns = to_drop, inplace=True)
+                    
+                    def reverse_date(date):
+                        day, month, year = date.split("/")
+                        return year + "-" + month + "-" + day
+                        
+                    # Reverse the strings in the 'Column' column
+                    df['Date'] = df['Date'].apply(reverse_date)
+                    
+                    # Creating Products Pandas Dataframe
+                    
+                    Drinks = {
+                        "Latte": [2.15, 2.45],
+                        "Flavoured latte - Vanilla": [2.55, 2.85],
+                        "Flavoured latte - Caramel": [2.55, 2.85],
+                        "Flavoured latte - Hazelnut": [2.55, 2.85],
+                        "Flavoured latte - Gingerbread": [2.55, 2.85],
+                        "Cappuccino": [2.15, 2.45],
+                        "Americano": [1.95, 2.25],
+                        "Flat white": [2.15, 2.45],
+                        "Cortado": [2.05, 2.35],
+                        "Mocha": [2.30, 2.70],
+                        "Espresso": [1.50, 1.80],
+                        "Filter coffee": [1.50, 1.80],
+                        "Chai latte": [2.30, 2.60],
+                        "Hot chocolate": [2.20, 2.90],
+                        "Flavoured hot chocolate - Caramel": [2.60, 2.90],
+                        "Flavoured hot chocolate - Hazelnut": [2.60, 2.90],
+                        "Flavoured hot chocolate - Vanilla": [2.60, 2.90],
+                        "Luxury hot chocolate": [2.40, 2.70],
+                        "Red Label tea": [1.20, 1.80],
+                        "Speciality Tea - Earl Grey": [1.30, 1.60],
+                        "Speciality Tea - Green": [1.30, 1.60],
+                        "Speciality Tea - Camomile": [1.30, 1.60],
+                        "Speciality Tea - Peppermint": [1.30, 1.60],
+                        "Speciality Tea - Fruit": [1.30, 1.60],
+                        "Speciality Tea - Darjeeling": [1.30, 1.60],
+                        "Speciality Tea - English breakfast": [1.30, 1.60],
+                        "Iced latte": [2.35, 2.85],
+                        "Flavoured iced latte - Vanilla": [2.75, 3.25],
+                        "Flavoured iced latte - Caramel": [2.75, 3.25],
+                        "Flavoured iced latte - Hazelnut": [2.75, 3.25],
+                        "Iced americano": [2.15, 2.50],
+                        "Frappes - Chocolate Cookie": [2.75, 3.25],
+                        "Frappes - Strawberries & Cream": [2.75, 3.25],
+                        "Frappes - Coffee": [2.75, 3.25],
+                        "Smoothies - Carrot Kick": [2.00, 2.50],
+                        "Smoothies - Berry Beautiful": [2.00, 2.50],
+                        "Smoothies - Glowing Greens": [2.00, 2.50],
+                        "Hot Chocolate": [1.40, 1.70],
+                        "Glass of milk": [0.70, 1.10]
+                    }
+                    
+                    drinks_transformed = {
+                        "product_id" : [],
+                        "product_name_and_size" : [],
+                        "price" : []
+                    }
+                    id = 0
+                    for i,v in Drinks.items():
+                        id += 1
+                        drinks_transformed["product_id"].append("PID" + str(id))
+                        drinks_transformed["product_name_and_size"].append("Regular " + i)
+                        drinks_transformed["price"].append(v[0])
+                        
+                        id += 1
+                        drinks_transformed["product_id"].append("PID" + str(id))
+                        drinks_transformed["product_name_and_size"].append("Large " + i)
+                        drinks_transformed["price"].append(v[1])
+                        
+                    products_table_data = pd.DataFrame(drinks_transformed)
+                    products_table_data.head()
+                    
+                    #Creating branch_id and Branch Pandas dataframe
+                    branch_id_dic = {
+                        "Longridge" : "101",
+                        "Uppingham" : "102",
+                        "Chesterfield" : "103"
+                    }
+                    branch_ids_index = ["101", "102", "103"]
+                    branch_names = ["Longridge", "Uppingham", "Chesterfield"]
+                    branch_ids = []
+                    
+                    branch_df = pd.DataFrame({
+                        "branch_id" : branch_ids_index,
+                        "branch_name" : branch_names
+                    })
+                    
+                    for i in df["Cafe Branch"]:
+                        branch_ids.append(branch_id_dic[i])
+                        
+                    print(branch_df)
+                    
+                    #Creating Payments ID and Payments Pandas dataframe
+                    payment_method_dic = {
+                        "Cash" : "PM01",
+                        "Card" : "PM02",
+                        "Mixed" : "PM03"
+                    }
+                    
+                    payment_method_id_index = ["PM01", "PM02", "PM03"]
+                    payment_method = ["Cash", "Card", "Mixed"]
+                    
+                    payment_method_ids = []
+                    
+                    payment_method_df = pd.DataFrame({
+                        "payment_id" : payment_method_id_index,
+                        "payment_method" : payment_method
+                    })
 
-                  for i in df["Payment Method"]:
-                      payment_method_ids.append(payment_method_dic[i.title()])
-                      
-                  payment_method_df
-                  
-                  #Creating Transactions ID and Transaction Pandas Dataframe
+                    for i in df["Payment Method"]:
+                        payment_method_ids.append(payment_method_dic[i.title()])
+                        
+                    payment_method_df
+                    
+                    #Creating Transactions ID and Transaction Pandas Dataframe
 
-                  transaction_id = 1
-                  transaction_ids = []
-                  time_hashed = []
-                  cafe_branch_hashed = []
+                    transaction_id = 1
+                    transaction_ids = []
+                    time_hashed = []
+                    cafe_branch_hashed = []
 
-                  for i in df["Time"]:
-                      time_hashed.append(str(hash(i)))
-                      
-                  for j in df["Cafe Branch"]:
-                      cafe_branch_hashed.append(str(hash(j)))
+                    for i in df["Time"]:
+                        time_hashed.append(str(hash(i)))
+                        
+                    for j in df["Cafe Branch"]:
+                        cafe_branch_hashed.append(str(hash(j)))
 
-                  count = 0
-                  for x in time_hashed:
-                      transaction_id_hashed = x + cafe_branch_hashed[count]
-                      transaction_ids.append(transaction_id_hashed)
-                      count =+ 1
-                      
-                  transaction_df = pd.DataFrame({
-                      "transaction_id" : transaction_ids,
-                      "date" : df["Date"],
-                      "time" : df["Time"],
-                      
-                      "total_price" : df["price"]
-                  })
-                  
-                  #Creating Baskets Pandas Dataframe
-                  baskets = []
-                  
-                  for t in df["Product"]:
-                      products = t.split(",")
-                      for p in range(len(products)):
-                          products[p] = products[p][:-7].strip()
-                          
-                      baskets.append(products)
-                      
-                  #get row number of product id
-                  def index_lookup(basket_number, product_index):
-                      n = 0
-                      list_of_booleans = products_table_data["product_name_and_size"] == baskets[basket_number][product_index]
-                      for v in list_of_booleans:
-                          if v == True:
-                              return n
-                              
-                          else:
-                              n = n + 1
-                  product_ids_baskets = []
-                  
-                  for i in range(len(baskets)):
-                      product_ids_basket = []
-                      for v in range(len(baskets[i])):
-                          product_ids_basket.append(products_table_data.loc[index_lookup(i,v), "product_id"])
-                      product_ids_baskets.append(', '.join(product_ids_basket))
-                      
-                  basket_df = pd.DataFrame({
-                      "transaction_id" : transaction_ids,
-                      "product_id" : product_ids_baskets
-                  })
-                  
-                  print(transaction_df.head())
-                  conn = create_engine('postgresql://group1:Redshift-delon8-group1-987asweh@redshiftcluster-0tpro3jveqq0.ccdyb7vgmw8g.eu-west-1.redshift.amazonaws.com:5439/group1_cafe')
-                  transaction_df.to_sql('transactions', conn, index=False, if_exists='append')
-                  basket_df.to_sql('baskets', conn, index=False, if_exists='append')
-                  print(conn)
-                  print('return successful')
-                  return True
-                  
-              except Exception as err:
-                      print('error' , err)
-                      return False
+                    count = 0
+                    for x in time_hashed:
+                        transaction_id_hashed = x + cafe_branch_hashed[count]
+                        transaction_ids.append(transaction_id_hashed)
+                        count =+ 1
+                        
+                    transaction_df = pd.DataFrame({
+                        "transaction_id" : transaction_ids,
+                        "date" : df["Date"],
+                        "branch_id" : branch_ids,
+                        "payment_method_id" : payment_method_ids,
+                        "time" : df["Time"],
+                        
+                        "total_price" : df["price"]
+                    })
+                    
+                    #Creating Baskets Pandas Dataframe
+                    baskets = []
+                    
+                    for t in df["Product"]:
+                        products = t.split(",")
+                        for p in range(len(products)):
+                            products[p] = products[p][:-7].strip()
+                            
+                        baskets.append(products)
+                        
+                    #get row number of product id
+                    def index_lookup(basket_number, product_index):
+                        n = 0
+                        list_of_booleans = products_table_data["product_name_and_size"] == baskets[basket_number][product_index]
+                        for v in list_of_booleans:
+                            if v == True:
+                                return n
+                                
+                            else:
+                                n = n + 1
+                    product_ids_baskets = []
+                    
+                    for i in range(len(baskets)):
+                        product_ids_basket = []
+                        for v in range(len(baskets[i])):
+                            product_ids_basket.append(products_table_data.loc[index_lookup(i,v), "product_id"])
+                        product_ids_baskets.append(', '.join(product_ids_basket))
+                        
+                    basket_df = pd.DataFrame({
+                        "transaction_id" : transaction_ids,
+                        "product_id" : product_ids_baskets
+                    })
+                    
+                    print(transaction_df.head())
+                    conn = create_engine('postgresql://group1:Redshift-delon8-group1-987asweh@redshiftcluster-0tpro3jveqq0.ccdyb7vgmw8g.eu-west-1.redshift.amazonaws.com:5439/group1_cafe')
+                    transaction_df.to_sql('transactions', conn, index=False, if_exists='append')
+                    basket_df.to_sql('baskets', conn, index=False, if_exists='append')
+                    print(conn)
+                    print('return successful')
+                    return True
+                    
+                except Exception as err:
+                        print('error' , err)
+                        return False
+            
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:

@@ -29,7 +29,7 @@ jobs:
       - name: Run linter
         uses: py-actions/flake8@v2
       - name: Run Black 
-        uses: psf/black@main --check
+        uses: psf/black@main
       - name: Run tests
         run: |
           python3 -m unittest test.py
