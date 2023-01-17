@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Setting up Grafana instance to help us monitor our ETL pipeline, visualise and store our data. Creating an S3 bucket using CloudFormation template deploy our Lambda function.
+Description: Template to setup and maintain an EC2 instance with a dockerised and persisted grafana ETL lambda
 
 # Parameters:
 #   InstanceId: 
