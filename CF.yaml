@@ -288,7 +288,7 @@ Resources:
                         return False
             
   EC2Instance:
-    Type: AWS::EC2::Instance::i-0da7164ad0ee9cb7f
+    Type: AWS::EC2::Instance
     Properties:
       # InstanceId: !Ref InstanceId
       AvailabilityZone: eu-west-1a
