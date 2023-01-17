@@ -35,16 +35,16 @@ jobs:
 
       - name: Run linter
         uses: py-actions/flake8@v2
-          with:
-            exclude: ".venv"
-            exclude: ".gitignore"
-            exclude: "src"
-            exclude: "CF.yaml"
-              exclude: "__pycache__"
-              exclude: ".github"
-              exclude: ".pre-commit-config.yaml"
-              exclude: "connect_requirements"
-              exclude: "README.md"
+        with:
+          exclude: ".venv"
+          exclude: ".gitignore"
+          exclude: "src"
+          exclude: "CF.yaml"
+          exclude: "__pycache__"
+          exclude: ".github"
+          exclude: ".pre-commit-config.yaml"
+          exclude: "connect_requirements"
+          exclude: "README.md"
             
 
       # - name: Run Black 
