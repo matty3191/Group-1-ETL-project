@@ -1,6 +1,6 @@
 
 name: Continuous Integration
-# comment
+# comment too commenty for my liking
 on:
   push:
     branches:
@@ -51,5 +51,5 @@ jobs:
         run: aws cloudformation validate-template --template-body file://CF.yaml
       - name: Update CloudFormation stack
         run: |
-          aws cloudformation create-stack --stack-name group1-stack-final --template-body file://CF.yaml --region eu-west-1
+          aws cloudformation update-stack --stack-name group1-stack-final --template-body file://CF.yaml --region eu-west-1
 
