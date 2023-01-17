@@ -1,7 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Setting up Grafana instance to help us monitor our ETL pipeline, visualise and store our data. Creating an S3 bucket using CloudFormation template deploy our Lambda function.
 
-# Parameters:
+Parameters:
+  InstanceId: 
+    Type: AWS::EC2::Instance::Id
+    description: The ID of the EC2 instance to connect to
   # AvailabilityZone:
   #   Type: AWS::EC2::AvailabilityZone::Name
   # EnvironmentType:
@@ -287,7 +290,7 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceId: i-0da7164ad0ee9cb7f
+      InstanceId: !Ref InstanceId
       AvailabilityZone: eu-west-1a
       ImageId: ami-0fe0b2cf0e1f25c8a
       InstanceType: t2.micro
