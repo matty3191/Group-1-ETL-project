@@ -40,14 +40,14 @@ Mappings:
 #             Function: arn:aws:lambda:eu-west-1:948243690849:function:group-1-lambda
 #             # !GetAtt LambdaFunction.Arn
 
-  S3BucketPermission:
-    Type: AWS::Lambda::Permission
-    Properties: 
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref LambdaFunction
-      Principal: s3.amazonaws.com
-      SourceArn: arn:aws:s3:::g1-final-bucket
-      # !GetAtt S3Bucket.Arn
+  # S3BucketPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties: 
+  #     Action: lambda:InvokeFunction
+  #     FunctionName: !Ref LambdaFunction
+  #     Principal: s3.amazonaws.com
+  #     SourceArn: arn:aws:s3:::g1-final-bucket
+  #     # !GetAtt S3Bucket.Arn
 
   LambdaFunction:
     Type: AWS::Lambda::Function
@@ -314,7 +314,7 @@ Mappings:
           test,
           InstanceType,
         ]
-      KeyName: group1kp
+      KeyName: group1kp2
       SecurityGroupIds:
         - sg-06bd2953ac4510386
         - sg-09ddd305daee3cb89
