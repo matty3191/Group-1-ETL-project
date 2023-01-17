@@ -1,36 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Template to setup and maintain an EC2 instance with a dockerised and persisted grafana ETL lambda
-
-# Parameters:
-#   InstanceId: 
-#     Type: AWS::EC2::Instance::Id
-#     Description: The ID of the EC2 instance to connect to
-  # AvailabilityZone:
-  #   Type: AWS::EC2::AvailabilityZone::Name
-  # EnvironmentType:
-  #   Description: "Specify the Environment type of the stack."
-  #   Type: String
-  #   Default: dev
-  #   AllowedValues:
-  #     - dev
-  #     - test
-  #     - prod
-  # AmiID:
-  #   Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
-  #   Description: "The ID of the AMI."
-  #   Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
-  # KeyPairName:
-  #   Type: String
-  #   Description: The name of an existing Amazon EC2 key pair in this region to use to SSH into the Amazon EC2 instances.
-
-# Mappings:
-#   EnvironmentToInstanceType:
-#     dev:
-#       InstanceType: t2.micro
-#     test:
-#       InstanceType: t2.micro
-#     prod:
-#       InstanceType: t2.micro
+Description: Template to setup and maintain an EC2 instance with a dockerised and persisted grafana and an ETL lambda
 
 Resources:
   LambdaFunction:

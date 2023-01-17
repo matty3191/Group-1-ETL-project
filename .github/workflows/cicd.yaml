@@ -1,6 +1,6 @@
 
 name: Continuous Integration
-# comment too commenty for my liking
+
 on:
   push:
     branches:
@@ -13,7 +13,8 @@ permissions:
 jobs:
   lint-format-test:
     name: Lint, Format, and test
-    
+    paths:
+      - 'group-1-data-engineering-final-project/**/*.py'
     runs-on: Ubuntu-latest
     steps:
       - name: Checkout code
@@ -24,12 +25,8 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          echo $GITHUB_WORKSPACE
-          pip list
           black test.py
           flake8 --ignore=E501,F841 test.py
 
