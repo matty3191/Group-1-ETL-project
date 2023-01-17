@@ -13,8 +13,6 @@ permissions:
 jobs:
   lint-format-test:
     name: Lint, Format, and test
-    paths:
-      - 'group-1-data-engineering-final-project/**/*.py'
     runs-on: Ubuntu-latest
     steps:
       - name: Checkout code
