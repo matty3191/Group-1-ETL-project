@@ -4,7 +4,7 @@ Description: Setting up Grafana instance to help us monitor our ETL pipeline, vi
 Parameters:
   InstanceId: 
     Type: AWS::EC2::Instance::Id
-    description: The ID of the EC2 instance to connect to
+    Description: The ID of the EC2 instance to connect to
   # AvailabilityZone:
   #   Type: AWS::EC2::AvailabilityZone::Name
   # EnvironmentType:
