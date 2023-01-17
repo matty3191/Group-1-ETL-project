@@ -32,11 +32,12 @@ jobs:
           pip install -r connect_requirements.txt
           echo $GITHUB_WORKSPACE
           pip list
+          flake8 test.py
 
-      - name: Run linter
-        uses: py-actions/flake8@v2
-        with:
-          exclude: ".venv", ".gitignore", "src", "CF.yaml", "__pycache__", ".github", ".pre-commit-config.yaml", "connect_requirements", "README.md"
+      # - name: Run linter
+      #   uses: py-actions/flake8@v2
+      #   with:
+      #     exclude: ".venv", ".gitignore", "src", "CF.yaml", "__pycache__", ".github", ".pre-commit-config.yaml", "connect_requirements", "README.md"
 
       # - name: Run Black 
       #   uses: psf/black@main
