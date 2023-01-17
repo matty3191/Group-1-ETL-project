@@ -18,8 +18,8 @@ jobs:
     runs-on: Ubuntu-latest
     steps:
       - name: Checkout code and setup python
-        - uses: actions/checkout@v3
-        - uses: actions/setup-python@v4
+        uses: actions/checkout@v3
+        uses: actions/setup-python@v4
         with: 
           python-version: '3.9'
           cache: 'pip'
