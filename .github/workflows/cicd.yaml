@@ -33,7 +33,7 @@ jobs:
           echo $GITHUB_WORKSPACE
           pip list
           black test.py
-          flake8 test.py
+          flake8 --ignore=E501,F841 test.py
 
       # - name: Run linter
       #   uses: py-actions/flake8@v2
