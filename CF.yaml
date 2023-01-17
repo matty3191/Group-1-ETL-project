@@ -252,9 +252,11 @@ Resources:
                     print('return successful')
                     return True
                     
+                    
                 except Exception as err:
                         print('error' , err)
                         return False
+
             
   EC2Instance:
     Type: AWS::EC2::Instance
