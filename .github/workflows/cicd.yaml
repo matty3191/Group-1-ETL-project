@@ -27,11 +27,9 @@ jobs:
           source .venv/bin/activate
           pip install -r connect_requirements.txt
       - name: Run linter
-        run: |
-          flake8 .
-      - name: Run Black
-        run: |
-          black --check .
+        uses: py-actions/flake8@v2
+      - name: Run Black 
+        uses: psf/black@main --check
       - name: Run tests
         run: |
           python3 -m unittest test.py
