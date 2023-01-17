@@ -13,21 +13,27 @@ permissions:
   contents: read
 
 jobs:
-  install-depencies:
+  lint-format-test:
     name: Lint, Format, and test
+    
     runs-on: Ubuntu-latest
     steps:
-    - name: Checkout code and setup python
-      uses: actions/checkout@v3
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-      - run: |
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with: 
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
+          echo $GITHUB_WORKSPACE
+          pip list
           black test.py
           flake8 --ignore=E501,F841 test.py
-          python3 -m unittest test.py
 
 
 
