@@ -17,12 +17,17 @@ jobs:
     name: Lint, Format, and test
     runs-on: Ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
+    - name: Checkout code and setup python
+      uses: actions/checkout@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-        cache: 'pip' 
-    - run: pip install -r requirements.txt
+      - run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          black test.py
+          flake8 --ignore=E501,F841 test.py
+          python3 -m unittest test.py
 
 
 
