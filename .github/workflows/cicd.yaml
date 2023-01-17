@@ -11,10 +11,35 @@ permissions:
   contents: read
 
 jobs:
+  lint-format-test:
+    name: Lint, Format, and test
+    runs-on: Ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+          with:
+            python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r connect_requirements.txt
+      - name: Run linter
+        run: |
+          flake8 .
+      - name: Run Black
+        run: |
+          black --check .
+      - name: Run tests
+        run: |
+          python3 -m unittest test.py
+
+
   Deploy:
     name: Deploy to AWS
     runs-on: Ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,16 +49,15 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-deploy-role
           aws-region: eu-west-1
           role-duration-seconds: 1200
-
       - name: Install AWS CLI
         run: sudo apt-get install awscli -y
-
       - name: Validate Cloudformation template
         run: aws cloudformation validate-template --template-body file://CF.yaml
-
       - name: Update CloudFormation stack
         run: |
           aws cloudformation update-stack --stack-name group1-stack --template-body file://CF.yaml --region eu-west-1
+
+
   # upload:
   #   name: List account S3 buckets
   #   runs-on: ubuntu-latest
