@@ -29,16 +29,16 @@ Mappings:
     prod:
       InstanceType: t2.micro
 
-Resources:
-  S3Bucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: g1-final-bucket
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:*
-            Function: arn:aws:lambda:eu-west-1:948243690849:function:group-1-lambda
-            # !GetAtt LambdaFunction.Arn
+# Resources:
+#   S3Bucket:
+#     Type: 'AWS::S3::Bucket'
+#     Properties:
+#       BucketName: g1-final-bucket
+#       NotificationConfiguration:
+#         LambdaConfigurations:
+#           - Event: s3:ObjectCreated:*
+#             Function: arn:aws:lambda:eu-west-1:948243690849:function:group-1-lambda
+#             # !GetAtt LambdaFunction.Arn
 
   S3BucketPermission:
     Type: AWS::Lambda::Permission
