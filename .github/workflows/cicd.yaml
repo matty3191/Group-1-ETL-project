@@ -23,14 +23,14 @@ jobs:
         with: 
           python-version: '3.9'
           cache: 'pip'
-      - run: |
-        pip install --upgrade pip
-        pip install -r connect_requirements.txt
-      - run: |
-        black test.py
-        flake8 --ignore=E501,F841 test.py
-      - run: |
-        python3 -m unittest test.py
+        - run: |
+          pip install --upgrade pip
+          pip install -r connect_requirements.txt
+        - run: |
+          black test.py
+          flake8 --ignore=E501,F841 test.py
+        - run: |
+          python3 -m unittest test.py
 
 
   # Deploy:
