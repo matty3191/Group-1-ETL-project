@@ -28,9 +28,11 @@ jobs:
         run: |
           python -m venv .venv
           source .venv/bin/activate
+          pip install --upgrade pip
           pip install -r connect_requirements.txt
           echo $GITHUB_WORKSPACE
           pip list
+
       # - name: Run linter
       #   uses: py-actions/flake8@v2
       #     with:
