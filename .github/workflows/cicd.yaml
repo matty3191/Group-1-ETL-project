@@ -32,6 +32,7 @@ jobs:
           pip install -r connect_requirements.txt
           echo $GITHUB_WORKSPACE
           pip list
+          black test.py
           flake8 test.py
 
       # - name: Run linter
