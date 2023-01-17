@@ -30,21 +30,13 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r connect_requirements.txt
-          echo $GITHUB_WORKSPACE
-          pip list
+      - name: Lint + format code
+        run: |
           black test.py
           flake8 --ignore=E501,F841 test.py
-
-      # - name: Run linter
-      #   uses: py-actions/flake8@v2
-      #   with:
-      #     exclude: ".venv", ".gitignore", "src", "CF.yaml", "__pycache__", ".github", ".pre-commit-config.yaml", "connect_requirements", "README.md"
-
-      # - name: Run Black 
-      #   uses: psf/black@main
-      # - name: Run tests
-      #   run: |
-      #     python3 -m unittest test.py
+      - name: Run tests
+        run: |
+          python3 -m unittest test.py
 
 
   # Deploy:
