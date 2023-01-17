@@ -25,15 +25,15 @@ jobs:
           python-version: 3.9
           cache: 'pip'
       - name: Install dependencies
-        run: |
+        - run: |
           python -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r connect_requirements.txt
-        run: |
+        - run: |
           black test.py
           flake8 --ignore=E501,F841 test.py
-        run: |
+        - run: |
           python3 -m unittest test.py
 
 
