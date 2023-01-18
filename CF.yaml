@@ -6,7 +6,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Runtime: python3.9
-      Handler: index.lamba_handler
+      Handler: index.lambda_handler
       Role: arn:aws:iam::948243690849:role/lambda-execution-role
       Environment:
         Variables:
