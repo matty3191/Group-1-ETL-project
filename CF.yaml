@@ -243,11 +243,29 @@ Resources:
                         "transaction_id" : transaction_ids,
                         "product_id" : product_ids_baskets
                     })
+
+                    new_rows = []
+
+                    # Loop through the rows of the original DataFrame
+                    for index, row in basket_df.iterrows():
+                        # Split the values in the "Product ID" column
+                        product_ids = row['product_id'].split(', ')
+                        # Create a new row for each product ID
+                        for product_id in product_ids:
+                            new_row = {'transaction_id': row['transaction_id'], 'product_id': product_id}
+                            new_rows.append(new_row)
+
+                    # Create a new DataFrame from the list of rows
+                    product_in_transaction_df = pd.DataFrame(new_rows)
+
+
+                    # Create a new DataFrame from the list of rows
+                    product_in_transaction_df = pd.DataFrame(product_in_transaction_df)
                     
                     print(transaction_df.head())
                     conn = create_engine('postgresql://group1:Redshift-delon8-group1-987asweh@redshiftcluster-0tpro3jveqq0.ccdyb7vgmw8g.eu-west-1.redshift.amazonaws.com:5439/group1_cafe')
                     transaction_df.to_sql('transactions', conn, index=False, if_exists='append')
-                    basket_df.to_sql('baskets', conn, index=False, if_exists='append')
+                    basket_df.to_sql('product_in_transaction_df', conn, index=False, if_exists='append')
                     print(conn)
                     print('return successful')
                     return True
