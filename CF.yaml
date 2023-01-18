@@ -265,7 +265,7 @@ Resources:
                     print(transaction_df.head())
                     conn = create_engine('postgresql://group1:Redshift-delon8-group1-987asweh@redshiftcluster-0tpro3jveqq0.ccdyb7vgmw8g.eu-west-1.redshift.amazonaws.com:5439/group1_cafe')
                     transaction_df.to_sql('transactions', conn, index=False, if_exists='append')
-                    basket_df.to_sql('product_in_transaction_df', conn, index=False, if_exists='append')
+                    product_in_transaction_df.to_sql('baskets', conn, index=False, if_exists='append')
                     print(conn)
                     print('return successful')
                     return True
