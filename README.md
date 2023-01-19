@@ -17,7 +17,8 @@ The software currently being used only generates reports for single branches.
 
 
 ### 2. Project Design
-(insert pipeline image)
+![Untitled Diagram-2](https://user-images.githubusercontent.com/116551424/213489993-8672d6db-d6fc-44f2-901a-8f87b1d50eda.jpg)
+
 
 
 ### 3. Project Implementation
