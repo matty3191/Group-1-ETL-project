@@ -28,10 +28,7 @@ Resources:
             s3_client = boto3.client('s3')
 
             def lambda_handler(event, context):
-            # TODO implement
-
                 try:
-        
                     bucket = event['Records'][0]['s3']['bucket']['name']
                     key = event['Records'][0]['s3']['object']['key']
             
@@ -42,13 +39,13 @@ Resources:
                     
                     ### to do - if statement for number of columns data validation
                     column_names = [
-                    'DateTime',
-                    'Cafe Branch',
-                    'Name',
-                    'Product',
-                    'price',
-                    'Payment Method',
-                    'Card Number'
+                        'DateTime',
+                        'Cafe Branch',
+                        'Name',
+                        'Product',
+                        'price',
+                        'Payment Method',
+                        'Card Number'
                     ]
 
                     df.columns = column_names
