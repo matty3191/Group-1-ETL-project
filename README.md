@@ -31,7 +31,8 @@ The early draft of our ETL project consisted of pushing our data on a locally ho
 Externalize Database Connectivity Information
 Creating a file with list of tables to be loaded
 Reading table list using Pandas
-
+ 
+ (insert image)
 
 ## Normalisation + schema
 The aim was to make querying as straightforward as possible. We ensured that the normalisation process allowed us to accurately query the databases and retrieve the relevant information. The further 
@@ -85,14 +86,10 @@ df.drop(columns=to_drop, inplace=True)
 df.head()
 ```
 
-
-- hashing
-- df etc.
-
 ## AWS
 
 Amazon Web Services is at the core of our ETL pipeline for how we dropped data, [.csv files] into buckets that would automatically go through transformation with our lambda. The cloudformation process and EC2 for hosting the site were all thanks to AWS ability to scale and process the data through connected services. Additional functions included managing permission for who could access the database using SSM. We used SQS for automated messaging within the AWS environment to ensure that we could verify when data was successfully queried.
-
+- cloud formation stack
 
 ## Database
 
@@ -104,11 +101,18 @@ The outcome of transformed data were loaded into our Redshift database where sen
 We used docker's plug-in Grafana that we hosted on our EC2 for data visualisation. The tools that we drew from realtime on our live database on AWS Redshift provided many opportunities to display data appropriately.
 It can also be used to moniter our website's internal metric for maintanince purposes.
 We were able to query different metrics that were relevant for our business intellgence clients to pull from. Ranging from best performing cafe,worst performing product, average spend and so on. This provided the final part of our ETL process.
-
+(insert images)
 
 ## Automation
 
 Initially, we used a local script using git commands to initiate the deploy process. Each time the code was altered, the updates were automatically applied on AWS. We later updated this model with Github Actions. This CI/CD process allowed us to automate the deploy process via the cloud and was able to verify if the changes were functional or not upon completion.
+
+-continuos integration 
+
+### Ways of working
+![Screenshot 2023-01-17 at 13 27 51](https://user-images.githubusercontent.com/116551424/213492849-272e7b1b-28f7-44d8-acae-f9d7b5f3fa4c.jpg)
+
+The project consisted of five sprints, where each sprint is a week in length. Using agile methodolgy we assigned priority and difficulty of task [issue points] to our weekly sprint goals. Each person was assigned a task by the SCRUM master and we reviewed it as a team and with the product owner. We had weekly friday retros to discuss and improve our collabtaive efforts. We also had daily stand ups at the start of the day and stand outs at the end of the day.
 
 
 ## Features:
@@ -144,17 +148,12 @@ for pulling data from AWS
 Python3, Pandas and Git were also used.
 
 
-### Ways of working
-![Screenshot 2023-01-17 at 13 27 51](https://user-images.githubusercontent.com/116551424/213492849-272e7b1b-28f7-44d8-acae-f9d7b5f3fa4c.jpg)
-
-The project consisted of five sprints, where each sprint is a week in length. Using agile methodolgy we assigned priority and difficulty of task [issue points] to our weekly sprint goals. Each person was assigned a task by the SCRUM master and we reviewed it as a team and with the product owner. We had weekly friday retros to discuss and improve our collabtaive efforts. We also had daily stand ups at the start of the day and stand outs at the end of the day.
-
-
 
 ## Conclusion
 
 
-Reading table list using Pandas
-lambda
-clouddformation ec2
-normalisation
+
+lambda layers
+clouddformation ec2 - pre existing subnets and s3 bucket and vpcs etc.
+normalisation. --- 3nf
+testing data validation ---
