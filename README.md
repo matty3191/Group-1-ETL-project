@@ -41,6 +41,49 @@ we normalise, the less query flexibility we achieve. As a result, we did not go 
 
 ## Data Transformation
 We were given an example CSV file, 2021-02-23-isle-of-wight.csv, which replicated the type of data the pipeline would be handling. The CSV had a lot of PII, so we created a function where we pass in the CSV as a parameter, and the name, card details and card type columns would be removed. It then returns a list of the extracted data.
+The given code is reading a csv file named "chesterfield_25-08-2021_09-00-00.csv" and storing it in a dataframe (df) using pandas library. Then the column names of the dataframe are being changed to the specified names in the "column_names" variable. It then drops certain sensitive columns like "Card Number" and "Name" from the dataframe. Then it splits the "DateTime" column into two separate columns "Date" and "Time" and drops the original "DateTime" column. The final block of code creates a dictionary of drinks and their prices, and creates a new dataframe from it.
+```import pandas as pd
+
+raw_data = "chesterfield_25-08-2021_09-00-00.csv"
+
+if raw_data.endswith(".csv"):
+    df = pd.read_csv(raw_data)
+else:
+    print("Invalid file format")
+
+# Transformation
+column_names = [
+    "DateTime",
+    "Cafe Branch",
+    "Name",
+    "Product",
+    "Price",
+    "Payment Method",
+    "Card Number",
+]
+
+df.columns = column_names
+
+# Dropping Card Number
+to_drop = ["Card Number", "Name"]
+
+df.drop(columns=to_drop, inplace=True)
+df.head()
+
+# Creating new Date and Time columns
+df[["Date", "Time"]] = df.DateTime.str.split(
+    " ",
+    expand=True,
+)
+df.head()
+
+to_drop = [
+    "DateTime",
+]
+
+df.drop(columns=to_drop, inplace=True)
+df.head()
+```
 
 
 - hashing
