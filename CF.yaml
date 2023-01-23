@@ -257,7 +257,7 @@ Resources:
                     new_baskets_df = pd.DataFrame(new_rows)
                     
                     print(new_baskets_df.head())
-                    conn = create_engine('postgresql://group1:Redshift-delon8-group1-987asweh@redshiftcluster-0tpro3jveqq0.ccdyb7vgmw8g.eu-west-1.redshift.amazonaws.com:5439/group1_cafe')
+                    conn = create_engine('postgresql://URI')
                     transaction_df.to_sql('transactions', conn, index=False, if_exists='append')
                     new_baskets_df.to_sql('baskets', conn, index=False, if_exists='append')
                     print(conn)
@@ -277,9 +277,9 @@ Resources:
       InstanceType: t2.micro
       KeyName: group1kp2
       SecurityGroupIds:
-        - sg-06bd2953ac4510386
-        - sg-09ddd305daee3cb89
-      SubnetId: subnet-07ed3e4e6dd0632e0
+        - sg-123456789
+        - sg-123456789
+      SubnetId: subnet-123456789
       IamInstanceProfile: grafana-role
       UserData: !Base64 |
         Content-Type: multipart/mixed; boundary="//"
